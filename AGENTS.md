@@ -9,7 +9,8 @@ Amplication is a large-scale Nx-managed TypeScript monorepo that powers backend 
 | `packages/` | Deployable apps/services (server, client, CLI, GPT gateway, notification service, storage gateway, build manager, DSG, etc.) | Each package has its own `project.json`, README, and Nx targets. |
 | `libs/` | Shared Nx libraries (schema registry, UI design system, utilities) | Consume via Nx import paths; update READMEs when APIs change. |
 | `ee/` | Enterprise Edition overlays mirroring OSS structure | **Never modify without explicit scope**; uses a different license. |
-| `docs/`, `tutorials/` | Product/docs content, diagrams, marketing drafts | Use when referencing docs or updating guides. |
+| `docs/` | Architecture diagrams (`*.drawio`) and shared documentation assets | Keep diagrams updated when flows change; store source `.drawio` files here. |
+| `tutorials/` | Blog/marketing-style Markdown posts and walkthroughs | Use for narrative tutorials, announcements, and marketing drafts. |
 | `.github/` | CI/CD workflows (CI, release, security, DSG pipelines) | Keep workflows aligned with Nx targets; do not hardcode secrets. |
 | `.devcontainer/`, `.husky/`, `.vscode/`, root configs (`nx.json`, `tsconfig.base.json`, `jest.config.ts`, `docker-compose.dev.yml`, `.env.docker-compose`) | Tooling, editor, and environment configuration | Update alongside tooling changes; respect lint/format settings. |
 | `scripts/` | Automation utilities (`setup.ts`, `publish.mjs`, `coverageMerger.js`) | Follow existing patterns when adding automation. |
@@ -17,13 +18,13 @@ Amplication is a large-scale Nx-managed TypeScript monorepo that powers backend 
 > ℹ️ Each package/library typically documents environment variables or usage details in its local README. Always consult and update those files when changing behavior.
 
 ## 3. Tooling & Environment Setup
-- **Prerequisites:** Node.js (per `package.json` engines), npm (matching engines), Docker Desktop/Engine, Git, and global TypeScript (`npm install -g typescript`).
+- **Prerequisites:** Node.js **22.13**, npm bundled with that Node release, Nx **16.9.1** (workspace-managed), Docker Desktop/Engine, Git, and optional global TypeScript (`npm install -g typescript`).
 - **Install & bootstrap:**
   ```bash
   npm install
   npm run setup:dev
   ```
-  `setup:dev` installs dependencies, builds packages, and ensures Nx graph metadata remains consistent.
+  `npm run setup:dev` invokes the canonical automation script `scripts/setup.ts` to install dependencies, build packages, and keep the Nx graph metadata consistent.
 - **Infrastructure services:**
   ```bash
   npm run docker:dev        # foreground logs
@@ -33,6 +34,7 @@ Amplication is a large-scale Nx-managed TypeScript monorepo that powers backend 
 - **Workspace conventions:** Use Nx-managed commands (`nx <target> <project>` or npm scripts that proxy Nx). Never invoke `tsc`, `jest`, etc., directly unless a project-specific README explicitly requires it.
 
 ## 4. Development Workflow & Commands
+All local activity should go through Nx commands or the npm scripts that proxy them—avoid calling underlying tooling (Jest, Prisma, etc.) directly unless a package README explicitly requires it.
 1. **Serve applications:**
    ```bash
    nx serve amplication-server
@@ -44,6 +46,8 @@ Amplication is a large-scale Nx-managed TypeScript monorepo that powers backend 
    ```bash
    nx test amplication-server
    nx affected --target=test --base=origin/main --head=HEAD
+   nx affected --target=lint --base=origin/main --head=HEAD
+   nx affected --target=build --base=origin/main --head=HEAD
    ```
    Targeted Nx commands keep CI parity. Jest config is centralized through `jest.preset.js`.
 3. **Lint & format:**
@@ -78,7 +82,7 @@ Amplication is a large-scale Nx-managed TypeScript monorepo that powers backend 
 3. **Use Nx targets & scripts.** Do not bypass Nx (e.g., running raw `jest`) unless a package README mandates it.
 4. **Update documentation alongside code.** Especially README env tables and diagrams under `docs/` or `tutorials/`.
 5. **Do not push commits directly.** All contributions flow through PRs handled after agent work concludes.
-6. **Preserve automation patterns.** Follow `scripts/setup.ts` style for new tooling.
+6. **Preserve automation patterns.** Mirror `scripts/setup.ts` conventions for new or updated tooling and refresh any documentation referencing the automation.
 7. **Run formatting/testing locally before handing off.** Mirrors Husky + CI expectations.
 
 ## 8. Common Tasks for Agents
@@ -121,7 +125,9 @@ Amplication is a large-scale Nx-managed TypeScript monorepo that powers backend 
 - `scripts/setup.ts` – canonical automation script structure (logging, error handling, workspace orchestration).
 - `packages/amplication-cli/README.md` – CLI documentation & command modeling for oclif-based tooling.
 - `packages/amplication-server/README.md` – environment variable table, service targets, and NestJS conventions.
+- `tutorials/deploy-to-azure.md` – reference for simple documentation/blog-style contributions.
 - `packages/amplication-client/` – React + MUI project layout, Nx `project.json` usage.
+- `docs/*.drawio` – authoritative Draw.io diagram sources for architecture visuals.
 - `libs/ui/design-system/` – shared component patterns, Storybook-ready exports.
 
 Use these files when adding new commands, services, or documentation to ensure consistency.

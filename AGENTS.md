@@ -125,10 +125,13 @@ All local activity should go through Nx commands or the npm scripts that proxy t
 - `scripts/setup.ts` – canonical automation script structure (logging, error handling, workspace orchestration).
 - `packages/amplication-cli/README.md` – CLI documentation & command modeling for oclif-based tooling.
 - `packages/amplication-server/README.md` – environment variable table, service targets, and NestJS conventions.
-- `tutorials/deploy-to-azure.md` – reference for simple documentation/blog-style contributions.
+- `packages/gpt-gateway/README.md` – gateway-specific env matrix and OpenAI workflow guidance for GPT-powered services.
+- `packages/notification-service/README.md` – event-driven notification runner overview; reference when touching Novu/SendGrid/Kafka flows.
 - `packages/amplication-client/` – React + MUI project layout, Nx `project.json` usage.
-- `docs/*.drawio` – authoritative Draw.io diagram sources for architecture visuals.
 - `libs/ui/design-system/` – shared component patterns, Storybook-ready exports.
+- `docs/ERD.drawio` – authoritative entity-relationship diagram source; update via Draw.io when data models shift.
+- `tutorials/deploy-to-azure.md` – reference for simple documentation/blog-style contributions.
+- `tutorials/social_media_post.md` – lightweight template for marketing or announcement posts.
 
 Use these files when adding new commands, services, or documentation to ensure consistency.
 

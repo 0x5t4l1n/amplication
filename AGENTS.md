@@ -57,7 +57,8 @@ All local activity should go through Nx commands or the npm scripts that proxy t
    ```
    Husky/lint-staged run these automatically; run locally before opening a PR.
 4. **Coverage aggregation:** `scripts/coverageMerger.js` combines package reports during CI. When altering test output paths, update this script.
-5. **Automation references:** `scripts/setup.ts` shows the expected Node-based automation style (CLI args, logging, error handling).
+5. **CI parity:** `.github/workflows/ci.yml` mirrors these Nx targets and commands; review it before changing build, test, or lint steps.
+6. **Automation references:** `scripts/setup.ts` shows the expected Node-based automation style (CLI args, logging, error handling).
 
 ## 5. Code & Testing Patterns
 - **Backend:** NestJS modules with GraphQL resolvers, Prisma clients, Kafka/Redis integrations. Tests favor Jest with dependency-injected modules.
@@ -127,11 +128,13 @@ All local activity should go through Nx commands or the npm scripts that proxy t
 - `packages/amplication-server/README.md` – environment variable table, service targets, and NestJS conventions.
 - `packages/gpt-gateway/README.md` – gateway-specific env matrix and OpenAI workflow guidance for GPT-powered services.
 - `packages/notification-service/README.md` – event-driven notification runner overview; reference when touching Novu/SendGrid/Kafka flows.
-- `packages/amplication-client/` – React + MUI project layout, Nx `project.json` usage.
+- `packages/amplication-client/README.md` – authoritative React + MUI setup, Nx targets, and frontend contribution guidance.
 - `libs/ui/design-system/` – shared component patterns, Storybook-ready exports.
 - `docs/ERD.drawio` – authoritative entity-relationship diagram source; update via Draw.io when data models shift.
 - `tutorials/deploy-to-azure.md` – reference for simple documentation/blog-style contributions.
 - `tutorials/social_media_post.md` – lightweight template for marketing or announcement posts.
+- `.github/workflows/ci.yml` – canonical CI pipeline showing how Nx targets are orchestrated in automation.
+- `.env.docker-compose` & `docker-compose.dev.yml` – source-of-truth environment and Docker Compose references for local infrastructure.
 
 Use these files when adding new commands, services, or documentation to ensure consistency.
 

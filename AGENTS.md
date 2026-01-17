@@ -18,7 +18,7 @@ Amplication is a large-scale Nx-managed TypeScript monorepo that powers backend 
 > ℹ️ Each package/library typically documents environment variables or usage details in its local README. Always consult and update those files when changing behavior.
 
 ## 3. Tooling & Environment Setup
-- **Prerequisites:** Node.js **22.13**, npm bundled with that Node release, Nx **16.9.1** (workspace-managed), Docker Desktop/Engine, Git, and optional global TypeScript (`npm install -g typescript`).
+- **Prerequisites:** Node.js **22.13**, npm **9** (bundled with that Node release but explicitly required), Nx **16.9.1** (workspace-managed), TypeScript **5.x** baseline (workspace-managed; optional global `npm install -g typescript@^5`), Docker Desktop/Engine, and Git.
 - **Install & bootstrap:**
   ```bash
   npm install
@@ -29,7 +29,7 @@ Amplication is a large-scale Nx-managed TypeScript monorepo that powers backend 
   ```bash
   npm run docker:dev        # foreground logs
   npm run docker:dev -- -d  # daemonized
-  npm run db:migrate:deploy # keep Prisma schema & DB aligned
+  npm run db:migrate:deploy # wraps `nx run-many --target=db:migrate:deploy` to keep Prisma schema & DB aligned
   ```
 - **Workspace conventions:** Use Nx-managed commands (`nx <target> <project>` or npm scripts that proxy Nx). Never invoke `tsc`, `jest`, etc., directly unless a project-specific README explicitly requires it.
 
@@ -130,6 +130,7 @@ All local activity should go through Nx commands or the npm scripts that proxy t
 - `packages/notification-service/README.md` – event-driven notification runner overview; reference when touching Novu/SendGrid/Kafka flows.
 - `packages/amplication-client/README.md` – authoritative React + MUI setup, Nx targets, and frontend contribution guidance.
 - `libs/ui/design-system/` – shared component patterns, Storybook-ready exports.
+- `libs/schema-registry/` – shared schema contracts consumed by server/client services; keep exports and docs in sync when APIs evolve.
 - `docs/ERD.drawio` – authoritative entity-relationship diagram source; update via Draw.io when data models shift.
 - `tutorials/deploy-to-azure.md` – reference for simple documentation/blog-style contributions.
 - `tutorials/social_media_post.md` – lightweight template for marketing or announcement posts.

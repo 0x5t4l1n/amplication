@@ -45,9 +45,9 @@ All local activity should go through Nx commands or the npm scripts that proxy t
 2. **Test suites:**
    ```bash
    nx test amplication-server
-   nx affected --target=test --base=origin/main --head=HEAD
-   nx affected --target=lint --base=origin/main --head=HEAD
-   nx affected --target=build --base=origin/main --head=HEAD
+   nx affected --target=test --base=origin/master --head=HEAD
+   nx affected --target=lint --base=origin/master --head=HEAD
+   nx affected --target=build --base=origin/master --head=HEAD
    ```
    Targeted Nx commands keep CI parity. Jest config is centralized through `jest.preset.js`.
 3. **Lint & format:**

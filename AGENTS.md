@@ -53,9 +53,9 @@ All local activity should go through Nx commands or the npm scripts that proxy t
 3. **Lint & format:**
    ```bash
    nx lint <project>
-   nx format:write --projects <project>
+   nx format:write --files <file list>
    ```
-   Husky/lint-staged run these automatically; run locally before opening a PR.
+   Husky/lint-staged run these automatically (matching the lint-staged config that targets specific files); run locally before opening a PR.
 4. **Coverage aggregation:** `scripts/coverageMerger.js` combines package reports during CI. When altering test output paths, update this script.
 5. **CI parity:** `.github/workflows/ci.yml` mirrors these Nx targets and commands; review it before changing build, test, or lint steps.
 6. **Automation references:** `scripts/setup.ts` shows the expected Node-based automation style (CLI args, logging, error handling).
@@ -102,7 +102,7 @@ All local activity should go through Nx commands or the npm scripts that proxy t
 
 ### C. Executing Tests & Coverage
 1. Targeted tests: `nx test amplication-server`
-2. Workspace-wide affected tests: `nx affected --target=test --base=origin/main`
+2. Workspace-wide affected tests: `nx affected --target=test --base=origin/master`
 3. Merge coverage (CI or local): `node scripts/coverageMerger.js` after generating coverage outputs.
 
 ### D. Updating Dependencies

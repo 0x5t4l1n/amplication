@@ -24,12 +24,13 @@ Amplication is a large-scale Nx-managed TypeScript monorepo that powers backend 
   npm install
   npm run setup:dev
   ```
-  `npm run setup:dev` invokes the canonical automation script `scripts/setup.ts` to install dependencies, build packages, and keep the Nx graph metadata consistent.
+  Run `npm install` to pull workspace dependencies, then use `npm run setup:dev` (`scripts/setup.ts`) to regenerate Prisma clients, rebuild GraphQL schemas, and run `nx run-many --target=build` so packages and the Nx project graph stay in sync. Append `-- --clean` to clear the Nx cache before these steps when a full reset is needed.
 - **Infrastructure services:**
   ```bash
-  npm run docker:dev        # foreground logs
-  npm run docker:dev -- -d  # daemonized
-  npm run db:migrate:deploy # wraps `nx run-many --target=db:migrate:deploy` to keep Prisma schema & DB aligned
+  npm run docker:dev         # foreground logs
+  npm run docker:dev -- -d   # daemonized
+  npm run docker:dev:cleanup # stops & removes the dev stack
+  npm run db:migrate:deploy  # wraps `nx run-many --target=db:migrate:deploy` to keep Prisma schema & DB aligned
   ```
 - **Workspace conventions:** Use Nx-managed commands (`nx <target> <project>` or npm scripts that proxy Nx). Never invoke `tsc`, `jest`, etc., directly unless a project-specific README explicitly requires it.
 
@@ -42,6 +43,15 @@ All local activity should go through Nx commands or the npm scripts that proxy t
    nx serve amplication-cli
    ```
    Use the identifiers defined in `project.json`. Multiple services can run concurrently; ensure infra (`docker:dev`) is up for server-dependent apps.
+   Additional npm helpers proxy Nx targets for other deployables:
+   ```bash
+   npm run serve:dsg         # Nx run-many serve for build manager + local DSG controller
+   npm run serve:git         # Nx serve git-sync-manager
+   npm run serve:storage     # Nx serve amplication-storage-gateway
+   npm run serve:plugins     # Nx serve amplication-plugin-api
+   npm run serve:notification # Nx serve notification-service
+   ```
+   Consult each package README for service-specific env vars and prerequisites.
 2. **Test suites:**
    ```bash
    nx test amplication-server
@@ -90,7 +100,7 @@ All local activity should go through Nx commands or the npm scripts that proxy t
 ### A. Initial Local Setup
 1. `npm install`
 2. `npm run setup:dev`
-3. `npm run docker:dev` (optionally `-- -d`)
+3. `npm run docker:dev` (optionally `-- -d`; tear down with `npm run docker:dev:cleanup` when finished)
 4. `npm run db:migrate:deploy`
 5. Start required apps via `nx serve <project>`
 
@@ -98,7 +108,7 @@ All local activity should go through Nx commands or the npm scripts that proxy t
 1. Ensure Docker infra is running.
 2. In one terminal: `nx serve amplication-server`
 3. In another: `nx serve amplication-client`
-4. For feature-specific work, start additional apps (e.g., `nx serve amplication-data-service-generator`).
+4. For feature-specific work, start additional apps (e.g., `nx serve amplication-data-service-generator`) or leverage npm helpers such as `npm run serve:dsg`, `npm run serve:git`, `npm run serve:storage`, `npm run serve:plugins`, and `npm run serve:notification` (check each package README for env requirements).
 
 ### C. Executing Tests & Coverage
 1. Targeted tests: `nx test amplication-server`

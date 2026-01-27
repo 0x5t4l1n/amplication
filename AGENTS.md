@@ -68,13 +68,14 @@ All local activity should go through Nx commands or the npm scripts that proxy t
    Husky/lint-staged run these automatically (matching the lint-staged config that targets specific files); run locally before opening a PR.
 4. **Coverage aggregation:** `scripts/coverageMerger.js` combines package reports during CI. When altering test output paths, update this script.
 5. **CI parity:** `.github/workflows/ci.yml` mirrors these Nx targets and commands; review it before changing build, test, or lint steps.
-6. **Automation references:** `scripts/setup.ts` shows the expected Node-based automation style (CLI args, logging, error handling).
+6. **Automation references:** `scripts/setup.ts` shows the expected Node-based automation style (CLI args, logging, error handling). Most scripts run through `ts-node`, so keep TypeScript-friendly tooling (e.g., `tsconfig.json` path mappings) in sync when adjusting automation.
 
 ## 5. Code & Testing Patterns
 - **Backend:** NestJS modules with GraphQL resolvers, Prisma clients, Kafka/Redis integrations. Tests favor Jest with dependency-injected modules.
-- **Frontend:** React + MUI, story-driven components in `libs/ui/design-system`. Hooks/components rely on Nx library boundaries.
+- **Frontend:** React + MUI, story-driven components in `libs/ui/design-system`, and Storybook showcases. App bundlers rely on the Vite/Webpack settings declared in each `project.json`, so keep those configs aligned when updating dependencies or Nx targets.
 - **CLI:** `packages/amplication-cli` leverages oclif; commands are documented in its README. Follow its command registration pattern when extending.
 - **Shared libraries:** Use Nx generators to create libraries; ensure public APIs are exported via each lib’s `index.ts` and documented in README or Storybook when UI-related.
+- **Code generation tooling:** Data Service Generator packages (DSG/build manager) rely on `libs/util/code-gen-*`, `ts-morph`, and `ts-node` pipelines to emit NestJS/React artifacts. Modify templates and helper utilities together to keep generated projects consistent.
 - **Testing:**
   - Unit: `nx test <project>` (Jest).
   - Integration/e2e: defined per project; consult package README.

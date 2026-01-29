@@ -140,9 +140,11 @@ All local activity should go through Nx commands or the npm scripts that proxy t
 - `packages/gpt-gateway/README.md` – gateway-specific env matrix and OpenAI workflow guidance for GPT-powered services.
 - `packages/notification-service/README.md` – event-driven notification runner overview; reference when touching Novu/SendGrid/Kafka flows.
 - `packages/amplication-client/README.md` – authoritative React + MUI setup, Nx targets, and frontend contribution guidance.
+- `packages/data-service-generator/` – template-heavy data service generator codebase; review its structure before altering generation behavior or templates.
 - `libs/ui/design-system/` – shared component patterns, Storybook-ready exports.
 - `libs/schema-registry/` – shared schema contracts consumed by server/client services; keep exports and docs in sync when APIs evolve.
 - `docs/ERD.drawio` – authoritative entity-relationship diagram source; update via Draw.io when data models shift.
+- `docs/build-process-artifacts.drawio` – canonical build-process diagram source; edit in Draw.io and commit the `.drawio` alongside exported assets to keep source and outputs versioned together.
 - `tutorials/deploy-to-azure.md` – reference for simple documentation/blog-style contributions.
 - `tutorials/social_media_post.md` – lightweight template for marketing or announcement posts.
 - `ee/packages/...` – enterprise overlays mirroring OSS structure; consult when implementing enterprise-only features to keep parity with public packages.
